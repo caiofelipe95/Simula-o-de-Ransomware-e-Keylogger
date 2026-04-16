@@ -163,3 +163,5 @@ with keyboard.Listener(on_press=on_press) as listener:
 ```
 Assim, após executado o arquivo keylogger.py, será criado automaticamente um arquivo "log.txt", onde será armazenada todas as teclas que o usuário pressionar, enquanto estiver rodando o programa.
 
+Caso queira rodar o executável sem a necessidade de exibição de uma interface gráfica como o Visual Code, por exemplo, basta renomear o arquivo para "Keylogger.pyw". A extensão "pyw" é nativa do Python no windows e permite que o programa seja executado em segundo plano.
+
